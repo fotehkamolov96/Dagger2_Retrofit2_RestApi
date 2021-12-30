@@ -1,5 +1,6 @@
 package com.kamolovproducts.dagger2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.kamolovproducts.dagger2.modleunivers.UniverModel;
 import com.kamolovproducts.dagger2.view.UniverListAdapter;
 import com.kamolovproducts.dagger2.viewmodel.ListViewModel;
 
@@ -50,7 +52,18 @@ public class MainActivity extends AppCompatActivity {
             viewModel.refresh();
             refreshLayout.setRefreshing(false);
         });
+        //TODO 6- set the OnItemClickListener(the function on step 2) of the adapter
+        adapter.setOnItemClickListener(new UniverListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(UniverModel univerModel) {
+                Intent intent = new Intent(MainActivity.this, NewDetails.class);
 
+                intent.putExtra("name", univerModel.getCountryName());
+                intent.putExtra("description", univerModel.getCapital());
+                intent.putExtra("image", univerModel.getImage());
+                startActivity(intent);
+            }
+        });
         observerViewModel();
     }
 
