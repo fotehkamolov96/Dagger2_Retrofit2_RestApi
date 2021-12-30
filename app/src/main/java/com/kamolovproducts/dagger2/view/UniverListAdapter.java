@@ -86,22 +86,19 @@ public class UniverListAdapter extends RecyclerView.Adapter<UniverListAdapter.Un
         @BindView(R.id.capital)
         TextView countryCapital;
 
-        //view that needs to be displayed
+
         public UniverViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //get the current position
-                    int position = getAdapterPosition();
-                    //check if the listener not null
-                    //check if the clicked position is not a -1 or null
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        //TODO : 5- Send the current article
-                        listener.onItemClick(univerModels.get(position));
-                    }
+            itemView.setOnClickListener(view -> {
+
+                //get the current position
+                int position = getAdapterPosition();
+                //check if the listener not null
+                //check if the clicked position is not a -1 or null
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(univerModels.get(position));
                 }
             });
         }
@@ -112,13 +109,13 @@ public class UniverListAdapter extends RecyclerView.Adapter<UniverListAdapter.Un
             countryCapital.setText(country.getCapital());
             Util.loadImage(countryImage, country.getImage(), Util.getProgressDrawable(countryImage.getContext()));
         }
-    } //TODO : 1- Make an interface to handle the OnItemClick
+    }
+
 
     public interface OnItemClickListener {
         void onItemClick(UniverModel univerModel);
     }
 
-    //TODO : 2- Make one function that will connect be connected to the interface from the activity
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

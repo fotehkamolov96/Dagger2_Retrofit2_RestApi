@@ -32,6 +32,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/updates"
+            android:layout_width="match_parent"
+            android:layout_height="152dp"
+            android:layout_margin="16dp"
+            android:text="Update"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toTopOf="@+id/progress_bar_un"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
         <ProgressBar
             android:id="@+id/progress_bar_un"
             android:layout_width="wrap_content"

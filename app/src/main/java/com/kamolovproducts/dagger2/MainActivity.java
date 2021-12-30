@@ -3,6 +3,8 @@ package com.kamolovproducts.dagger2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
 
+    @BindView(R.id.updates)
+    ImageView imgView;
+
     private ListViewModel viewModel;
     private UniverListAdapter adapter = new UniverListAdapter(new ArrayList<>());
 
@@ -44,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
         viewModel.refresh();
-
         countriesList.setLayoutManager(new LinearLayoutManager(this));
         countriesList.setAdapter(adapter);
 
@@ -52,17 +56,16 @@ public class MainActivity extends AppCompatActivity {
             viewModel.refresh();
             refreshLayout.setRefreshing(false);
         });
-        //TODO 6- set the OnItemClickListener(the function on step 2) of the adapter
-        adapter.setOnItemClickListener(new UniverListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(UniverModel univerModel) {
-                Intent intent = new Intent(MainActivity.this, NewDetails.class);
 
-                intent.putExtra("name", univerModel.getCountryName());
-                intent.putExtra("description", univerModel.getCapital());
-                intent.putExtra("image", univerModel.getImage());
-                startActivity(intent);
-            }
+
+        adapter.setOnItemClickListener(univerModel -> {
+
+            Intent intent = new Intent(MainActivity.this, NewDetails.class);
+            intent.putExtra("name", univerModel.getCountryName());
+            intent.putExtra("description", univerModel.getCapital());
+            intent.putExtra("image", univerModel.getImage());
+            startActivity(intent);
+
         });
         observerViewModel();
     }
@@ -74,8 +77,10 @@ public class MainActivity extends AppCompatActivity {
                 adapter.updateCountries(countryModels);
             }
         });
+
         viewModel.countryLoadError.observe(this, isError -> {
             if (isError != null) {
+                imgView.setVisibility(isError ? View.VISIBLE : View.GONE);
                 listError.setVisibility(isError ? View.VISIBLE : View.GONE);
             }
         });
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
                 if (isLoading) {
                     listError.setVisibility(View.GONE);
+                    imgView.setVisibility(View.GONE);
                     countriesList.setVisibility(View.GONE);
                 }
             }
